@@ -34,12 +34,3 @@ func (r *OrderRepository) GetTotal() (int, error) {
 	}
 	return total, nil
 }
-
-func (r *OrderRepository) GetOrders() ([]entity.Order, error) {
-	var orders []entity.Order /*TODO: build list*/
-	err := r.Db.QueryRow("Select * from orders").Scan(&orders)
-	if err != nil {
-		return orders, err
-	}
-	return orders, nil
-}
