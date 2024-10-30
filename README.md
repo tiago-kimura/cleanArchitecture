@@ -1,6 +1,6 @@
 # cleanArchitecture
 
-An application designed to register orders, calculate the total price, and return a list of orders. The main idea is to build a model that follows the best practices of Clean Architecture, making the system open to REST, gRPC, and GraphQL communication and save the payload in a message broker HabbitMQ.
+An application designed to register orders, calculate the total price, and return a list of orders. The main idea is to build a model that follows the best practices of Clean Architecture, making the system open to REST, gRPC, and GraphQL communication and save the payload in a RabbitMQ message broker.
 
 ## Running
 
@@ -11,6 +11,8 @@ An application designed to register orders, calculate the total price, and retur
 
 ### Building docker image
 
+To start the database and RabbitMQ services, run:
+
 `docker-compose up -d`
 
 ### Running application
@@ -20,7 +22,7 @@ An application designed to register orders, calculate the total price, and retur
 
 ### Executing the application with Rest 
 
-On the project root there is a folder 'api' that there a exemplos to call the two end points just click on 'send request'.
+In the project root, there is an 'api' folder containing examples to call the endpoints. You can click on 'Send Request' to test them.
 
 - CreateOrder
 
@@ -32,7 +34,7 @@ On the project root there is a folder 'api' that there a exemplos to call the tw
 
 ### Executing the application with gRPC
 
-On Insomnia API Client: 
+Using Insomnia API Client: 
 
 - OrderService/CreateOrder
 
@@ -52,7 +54,7 @@ On Insomnia API Client:
 
 ### Executing the application with GraphQL
 
-On browser: http://localhost:8080/
+Open the browser and go to: http://localhost:8080/
 
 - CreateOrder
 
@@ -79,3 +81,9 @@ On browser: http://localhost:8080/
 }`
 
 ![alt text](/docs/image-3.png)
+
+### Viewing the messages on HabbitMQ
+
+Access RabbitMQ in browser at: http://localhost:15672/
+
+![alt text](/docs/HabbitMQ.png)
