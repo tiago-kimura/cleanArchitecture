@@ -11,14 +11,9 @@ An application designed to register orders, calculate the total price, and retur
 
 ### Building docker image
 
-To start the database and RabbitMQ services, run:
+To start the application, database and RabbitMQ services, run:
 
-`docker-compose up -d`
-
-### Running application
-
-`cd cmd/ordersystem`
-`go run main.go wire_gen.go`
+`docker-compose up --build -d`
 
 ### Executing the application with Rest 
 

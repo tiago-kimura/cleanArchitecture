@@ -39,14 +39,18 @@ services:
     networks:
       - order-system-network
 
-  # migrate:
-  #   build:
-  #     context: .
-  #     dockerfile: migrate.Dockerfile
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
-  #   restart: "no"
+  migrate:
+    build:
+      context: .
+      dockerfile: migrate.Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - order-system-network
+    volumes:
+      - ./migrations:/migrations
 
   order-system:
     build:
@@ -62,7 +66,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-      # - migrate
+      migrate:
+        condition: service_completed_successfully
     ports:
       - "8000:8000"
       - "50051:50051"
