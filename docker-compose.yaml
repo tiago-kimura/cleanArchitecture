@@ -14,10 +14,12 @@ services:
     volumes:
       - .docker/mysql:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "root"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - order-system-network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -29,15 +31,22 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - order-system-network
 
-  migrate:
-    build:
-      context: .
-      dockerfile: migrate.Dockerfile
-    depends_on:
-      mysql:
-        condition: service_healthy
-    restart: "no"
+  # migrate:
+  #   build:
+  #     context: .
+  #     dockerfile: migrate.Dockerfile
+  #   depends_on:
+  #     mysql:
+  #       condition: service_healthy
+  #   restart: "no"
 
   order-system:
     build:
@@ -49,10 +58,18 @@ services:
     volumes:
       - ./cmd/ordersystem/.env:/app/.env
     depends_on:
-      - mysql
-      - migrate
-      - rabbitmq
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      # - migrate
     ports:
       - "8000:8000"
       - "50051:50051"
       - "8080:8080"
+    networks:
+      - order-system-network
+
+networks:
+  order-system-network:
+    driver: bridge

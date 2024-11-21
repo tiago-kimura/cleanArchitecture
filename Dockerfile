@@ -1,5 +1,5 @@
 
-FROM golang:1.22.8 as builder
+FROM golang:1.22.8 AS builder
 WORKDIR /app
 
 COPY . .
@@ -10,7 +10,7 @@ WORKDIR /app/cmd/ordersystem
 
 RUN go build -o /app/order-system main.go wire_gen.go
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends default-mysql-client && apt-get clean && rm -rf /var/lib/apt/lists/*
 
